@@ -1,0 +1,115 @@
+/* Fondo general */
+body {
+  font-family: "Baloo 2", cursive;
+  color: #333;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-image: url("/static/images/extras_background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Encabezado */
+header {
+  background-color: #ffa726; /* Naranja */
+  text-align: center;
+  position: relative; /* Para centrar el título sin afectar al botón */
+}
+
+header h1 {
+  font-size: 2.5rem;
+  margin: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); /* Centrar horizontalmente */
+}
+
+header p {
+  font-size: 1.2rem;
+  margin: 30px 0 0; /* Aumenta el margen superior */
+}
+
+header .btn {
+  font-size: 1rem;
+  font-weight: bold;
+  position: absolute;
+  top: 50%; /* Centra verticalmente */
+  left: 5%; /* Mueve el botón hacia el centro horizontalmente */
+  transform: translateY(-50%);
+  z-index: 1; /* Asegura que el botón sea visible */
+  background-color: white; /* Fondo blanco */
+  color: #333; /* Texto en negro */
+  border: none; /* Sin bordes */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  border-radius: 8px; /* Bordes redondeados */
+  padding: 8px 16px; /* Espaciado interno */
+  transition: all 0.3s ease; /* Transiciones suaves */
+}
+
+header .btn:hover {
+  background-color: #ffe0b2; /* Cambio de color al pasar el ratón */
+  color: #ffa726; /* Color de texto al pasar el ratón */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Aumenta la sombra */
+}
+
+/* Main Content */
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Formulario */
+.form-container {
+  background: linear-gradient(
+    to right,
+    #ffffff,
+    #ffe0b2
+  ); /* Blanco con naranja claro */
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  text-align: left;
+}
+
+.form-container h2 {
+  font-family: "Fredoka One", cursive;
+}
+
+.form-container label {
+  font-weight: bold;
+  color: #333;
+}
+
+.form-container .form-control {
+  border: 2px solid #ffa726;
+  border-radius: 10px;
+}
+
+.form-container button {
+  background-color: #ffa726;
+  color: white;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.form-container button:hover {
+  background-color: #fb8c00; /* Naranja más oscuro */
+}
+
+/* Footer */
+footer {
+  background-color: #ffa726;
+  color: white;
+  padding: 10px 0;
+  margin-top: auto;
+}

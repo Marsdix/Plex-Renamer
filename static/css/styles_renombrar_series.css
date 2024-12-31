@@ -1,0 +1,111 @@
+/* Fondo general */
+body {
+  font-family: "Baloo 2", cursive;
+  color: #333;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-image: url("/static/images/renombrar_series_background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Encabezado */
+header {
+  background-color: #3949ab; /* Azul oscuro */
+  text-align: center;
+  position: relative; /* Para centrar el título sin afectar al botón */
+  padding: 20px 0;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  margin: 0;
+}
+
+header p {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  color: #d1c4e9; /* Azul claro */
+}
+
+header .btn {
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: white;
+  color: #333;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+}
+
+header .btn:hover {
+  background-color: #e8eaf6; /* Cambio de color al pasar el ratón */
+  color: #3949ab; /* Azul oscuro */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Main Content */
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Formulario */
+.form-container {
+  background: linear-gradient(
+    to right,
+    #ffffff,
+    #e8eaf6
+  ); /* Blanco y azul claro */
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  text-align: left;
+}
+
+.form-container h2 {
+  font-family: "Fredoka One", cursive;
+  font-size: 1.8rem;
+  color: #3949ab; /* Azul oscuro */
+}
+
+.form-container label {
+  font-weight: bold;
+  color: #333;
+}
+
+.form-container .form-control {
+  border: 2px solid #3949ab;
+  border-radius: 10px;
+}
+
+.form-container button {
+  background-color: #3949ab;
+  color: white;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.form-container button:hover {
+  background-color: #283593; /* Azul más oscuro */
+}
+
+/* Footer */
+footer {
+  background-color: #3949ab;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+}

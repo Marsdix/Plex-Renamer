@@ -1,0 +1,130 @@
+body {
+  font-family: "Baloo 2", cursive;
+  color: #333;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-image: url("/static/images/index_background.png"); /* Imagen de fondo única */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+header {
+  background-color: #e8cd76; /* Nuevo color */
+  color: #333;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+footer {
+  background-color: #e8cd76; /* Nuevo color */
+  color: #333;
+  padding: 10px 0;
+  text-align: center;
+}
+
+/* Botones personalizados */
+.custom-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 220px;
+  height: 150px;
+  border-radius: 15px;
+  color: #ffffff;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, color 0.1s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 2px solid white; /* Borde blanco */
+}
+
+.custom-btn img.icon {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
+}
+
+/* Botones específicos */
+.btn-warning {
+  background-color: #ff6b6b; /* Rojo claro */
+  border: 2px solid #ff6b6b; /* Borde igual al color base */
+}
+.btn-warning:hover {
+  background-color: #e63946; /* Rojo más fuerte */
+  border: 2px solid #e63946; /* Borde más fuerte */
+}
+
+.btn-info {
+  background-color: #4d96ff; /* Azul pastel */
+  border: 2px solid #4d96ff; /* Borde igual al color base */
+}
+.btn-info:hover {
+  background-color: #1e6fff; /* Azul más fuerte */
+  border: 2px solid #1e6fff; /* Borde más fuerte */
+}
+
+.btn-success {
+  background-color: #06d6a0; /* Verde suave */
+  border: 2px solid #06d6a0; /* Borde igual al color base */
+}
+.btn-success:hover {
+  background-color: #028a6a; /* Verde más fuerte */
+  border: 2px solid #028a6a; /* Borde más fuerte */
+}
+
+.btn-danger {
+  background-color: #ff85a1; /* Rosa */
+  border: 2px solid #ff85a1; /* Borde igual al color base */
+}
+.btn-danger:hover {
+  background-color: #ff3f6c; /* Rosa más fuerte */
+  border: 2px solid #ff3f6c; /* Borde más fuerte */
+}
+
+.btn-secondary {
+  background-color: #cea753; /* Amarillo cálido */
+  border: 2px solid #cea753; /* Borde igual al color base */
+}
+.btn-secondary:hover {
+  background-color: #e9b13a; /* Amarillo más fuerte */
+  border: 2px solid #e9b13a; /* Borde más fuerte */
+}
+
+.btn-dark {
+  background-color: #343a40; /* Negro suave */
+  border: 2px solid #343a40; /* Borde igual al color base */
+}
+.btn-dark:hover {
+  background-color: #212529; /* Negro más fuerte */
+  border: 2px solid #212529; /* Borde más fuerte */
+}
+
+/* Efectos de hover generales */
+.custom-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  color: black;
+}
+
+.custom-btn:hover img.icon {
+  transform: scale(1.2);
+}
+
+.custom-btn p {
+  margin: 0;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}

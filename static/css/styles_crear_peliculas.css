@@ -1,0 +1,167 @@
+/* Fondo general */
+body {
+  font-family: "Baloo 2", cursive;
+  color: #333;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-image: url("/static/images/movies_background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Encabezado */
+header {
+  background-color: #d9534f; /* Rojo intenso */
+  text-align: center;
+  position: relative; /* Para centrar el título sin afectar al botón */
+}
+
+header h1 {
+  font-size: 2.5rem;
+  margin: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); /* Centrar horizontalmente */
+}
+
+header p {
+  font-size: 1.2rem;
+  margin: 30px 0 0; /* Aumenta el margen superior */
+}
+
+header .btn {
+  font-size: 1rem;
+  font-weight: bold;
+  position: absolute;
+  top: 50%; /* Centra verticalmente */
+  left: 5%; /* Mueve el botón hacia el centro horizontalmente */
+  transform: translateY(
+    -50%
+  ); /* Ajusta para centrar perfectamente en el eje vertical */
+  z-index: 1; /* Asegura que el botón sea visible */
+  background-color: white; /* Fondo blanco */
+  color: #333; /* Texto en negro */
+  border: none; /* Sin bordes */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  border-radius: 8px; /* Bordes redondeados */
+  padding: 8px 16px; /* Espaciado interno */
+  transition: all 0.3s ease; /* Transiciones suaves */
+}
+
+header .btn:hover {
+  background-color: #f8d7da; /* Cambio de color al pasar el ratón */
+  color: #d9534f; /* Color de texto al pasar el ratón */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Aumenta la sombra */
+}
+
+/* Main Content */
+main {
+  flex: 1;
+}
+
+.row {
+  height: 100%;
+}
+
+/* Formulario */
+.form-container {
+  background: linear-gradient(
+    to right,
+    #ffffff,
+    #f8d7da
+  ); /* Blanco con rojo claro */
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  text-align: left;
+}
+
+.form-container h2 {
+  font-family: "Fredoka One", cursive;
+}
+
+.form-container label {
+  font-weight: bold;
+  color: #333;
+}
+
+.form-container .form-control {
+  border: 2px solid #d9534f;
+  border-radius: 10px;
+}
+
+.form-container button {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.form-container button:hover {
+  background-color: #c9302c; /* Rojo más oscuro */
+}
+
+/* Imagen temática con efecto neón */
+.img-fluid-container {
+  position: relative;
+  display: inline-block;
+  margin: auto;
+  border-radius: 20px;
+  text-align: center;
+  background: black; /* Fondo oscuro para el efecto */
+  padding: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Sombra decorativa */
+  width: 300px; /* Tamaño fijo del contenedor */
+  height: 450px; /* Tamaño fijo del contenedor */
+}
+
+.img-fluid {
+  border-radius: 15px; /* Esquinas redondeadas */
+  width: 100%; /* Ocupa todo el ancho del contenedor */
+  height: 100%; /* Ocupa toda la altura del contenedor */
+  object-fit: cover; /* Asegura que la imagen mantenga proporciones y rellene el espacio */
+}
+
+.img-fluid-container:before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border-radius: 25px;
+  border: 5px solid transparent;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 69, 0, 0.7),
+    rgba(255, 20, 147, 0.7),
+    rgba(255, 69, 0, 0.7)
+  );
+  background-size: 300%;
+  animation: neon 8s ease infinite; /* Animación fluida */
+  z-index: -1;
+}
+
+@keyframes neon {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+/* Footer */
+footer {
+  background-color: #d9534f;
+  color: white;
+  padding: 10px 0;
+  margin-top: auto;
+}
