@@ -23,24 +23,34 @@ header {
 header h1 {
   font-size: 2.5rem;
   margin: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); /* Centrar horizontalmente */
 }
 
 header p {
   font-size: 1.2rem;
-  margin-top: 10px;
+  margin: 30px 0 0; /* Aumenta el margen superior */
   color: #d1c4e9; /* Azul claro */
 }
 
 header .btn {
   font-size: 1rem;
   font-weight: bold;
-  background-color: white;
-  color: #333;
-  border: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  padding: 8px 16px;
-  transition: all 0.3s ease;
+  position: absolute;
+  top: 50%; /* Centra verticalmente */
+  left: 5%; /* Mueve el botón hacia el centro horizontalmente */
+  transform: translateY(
+    -50%
+  ); /* Ajusta para centrar perfectamente en el eje vertical */
+  z-index: 1; /* Asegura que el botón sea visible */
+  background-color: white; /* Fondo blanco */
+  color: #333; /* Texto en negro */
+  border: none; /* Sin bordes */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  border-radius: 8px; /* Bordes redondeados */
+  padding: 8px 16px; /* Espaciado interno */
+  transition: all 0.3s ease; /* Transiciones suaves */
 }
 
 header .btn:hover {
