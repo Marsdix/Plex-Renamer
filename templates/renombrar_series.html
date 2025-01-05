@@ -47,41 +47,49 @@
     <main
       class="container d-flex align-items-center justify-content-center vh-100"
     >
-      <form
-        action="/renombrar_series"
-        method="post"
-        class="bg-white p-5 rounded shadow form-container"
-        style="max-width: 500px"
-      >
-        <h2 class="mb-4 text-primary">
-          <i class="fas fa-sync-alt"></i> Renombrar Series
-        </h2>
-        <div class="mb-4">
-          <label for="ruta" class="form-label">Ruta Base:</label>
-          <input
-            type="text"
-            id="ruta"
-            name="ruta"
-            class="form-control"
-            placeholder="Introduce la ruta base de la serie"
-            required
-          />
+      <div class="w-100" style="max-width: 500px">
+        <!-- Mensaje de notificación -->
+        {% if mensaje %}
+        <div class="alert alert-primary text-center" role="alert">
+          {{ mensaje }}
         </div>
-        <div class="mb-4">
-          <label for="nombre" class="form-label">Nombre de la Serie:</label>
-          <input
-            type="text"
-            id="nombre"
-            name="nombre"
-            class="form-control"
-            placeholder="Introduce el nombre de la serie"
-            required
-          />
-        </div>
-        <button type="submit" class="btn btn-primary w-100">
-          <i class="fas fa-sync-alt"></i> Renombrar
-        </button>
-      </form>
+        {% endif %}
+        <!-- Formulario -->
+        <form
+          action="/renombrar_series"
+          method="post"
+          class="bg-white p-5 rounded shadow form-container"
+        >
+          <h2 class="mb-4 text-primary">
+            <i class="fas fa-sync-alt"></i> Renombrar Series
+          </h2>
+          <div class="mb-4">
+            <label for="ruta" class="form-label">Ruta Base:</label>
+            <input
+              type="text"
+              id="ruta"
+              name="ruta"
+              class="form-control"
+              placeholder="Introduce la ruta base de la serie"
+              required
+            />
+          </div>
+          <div class="mb-4">
+            <label for="nombre" class="form-label">Nombre de la Serie:</label>
+            <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              class="form-control"
+              placeholder="Introduce el nombre de la serie"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary w-100">
+            <i class="fas fa-sync-alt"></i> Renombrar
+          </button>
+        </form>
+      </div>
     </main>
 
     <!-- Footer -->

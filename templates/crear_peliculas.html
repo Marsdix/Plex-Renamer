@@ -50,6 +50,9 @@
       <!-- Formulario -->
       <div class="row align-items-center w-100">
         <div class="col-12 col-md-6">
+          {% if mensaje %}
+          <div class="alert alert-success" role="alert">{{ mensaje }}</div>
+          {% endif %}
           <form
             action="/crear_peliculas"
             method="post"

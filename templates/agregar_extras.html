@@ -47,38 +47,46 @@
     <main
       class="container d-flex align-items-center justify-content-center vh-100"
     >
-      <!-- Formulario -->
-      <form
-        action="/agregar_extras"
-        method="post"
-        class="bg-white p-5 rounded shadow form-container"
-      >
-        <h2 class="mb-4 text-warning">
-          <i class="fas fa-folder-plus"></i> Agregar Extras
-        </h2>
-        <div class="mb-4">
-          <label for="ruta" class="form-label">Ruta Base:</label>
-          <input
-            type="text"
-            id="ruta"
-            name="ruta"
-            class="form-control"
-            placeholder="Introduce la ruta base"
-            required
-          />
+      <div class="w-100" style="max-width: 600px">
+        <!-- Mensaje de notificación -->
+        {% if mensaje %}
+        <div class="alert alert-warning text-center" role="alert">
+          {{ mensaje }}
         </div>
-        <div class="mb-4">
-          <label for="tipo" class="form-label">Tipo de Contenido:</label>
-          <select id="tipo" name="tipo" class="form-select" required>
-            <option value="peliculas">Películas</option>
-            <option value="series">Series</option>
-            <option value="documentales">Documentales</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-warning w-100">
-          <i class="fas fa-plus"></i> Agregar
-        </button>
-      </form>
+        {% endif %}
+        <!-- Formulario -->
+        <form
+          action="/agregar_extras"
+          method="post"
+          class="bg-white p-5 rounded shadow form-container"
+        >
+          <h2 class="mb-4 text-warning">
+            <i class="fas fa-folder-plus"></i> Agregar Extras
+          </h2>
+          <div class="mb-4">
+            <label for="ruta" class="form-label">Ruta Base:</label>
+            <input
+              type="text"
+              id="ruta"
+              name="ruta"
+              class="form-control"
+              placeholder="Introduce la ruta base"
+              required
+            />
+          </div>
+          <div class="mb-4">
+            <label for="tipo" class="form-label">Tipo de Contenido:</label>
+            <select id="tipo" name="tipo" class="form-select" required>
+              <option value="peliculas">Películas</option>
+              <option value="series">Series</option>
+              <option value="documentales">Documentales</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-warning w-100">
+            <i class="fas fa-plus"></i> Agregar
+          </button>
+        </form>
+      </div>
     </main>
 
     <!-- Footer -->
