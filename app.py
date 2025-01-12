@@ -3,12 +3,42 @@ import os
 import signal
 import sys
 import logging  # Para manejo de logs
+from win32com.client import Dispatch  # Para crear accesos directos en Windows
 
 # Configuración de registros
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
+
+# Función para crear acceso directo en el escritorio
+def create_desktop_shortcut():
+    """
+    Crea un acceso directo en el escritorio si no existe.
+    """
+    try:
+        desktop = os.path.join(os.path.join(os.environ["USERPROFILE"]), "Desktop")  # Ruta al escritorio
+        shortcut_path = os.path.join(desktop, "Renombrador Plex.lnk")
+        target_path = os.path.abspath(sys.argv[0])  # Ruta del script actual
+        icon_path = os.path.join(os.path.dirname(target_path), "static", "icons", "palomitera.ico")
+
+        # Comprobar si ya existe el acceso directo
+        if os.path.exists(shortcut_path):
+            logger.info("El acceso directo ya existe.")
+            return
+
+        # Crear el acceso directo
+        shell = Dispatch("WScript.Shell")
+        shortcut = shell.CreateShortcut(shortcut_path)
+        shortcut.TargetPath = sys.executable  # Ruta del ejecutable de Python
+        shortcut.Arguments = f'"{target_path}"'  # Pasa el archivo como argumento
+        shortcut.WorkingDirectory = os.path.dirname(target_path)
+        shortcut.IconLocation = icon_path if os.path.exists(icon_path) else ""
+        shortcut.save()
+
+        logger.info(f"Acceso directo creado: {shortcut_path}")
+    except Exception as e:
+        logger.error(f"Error al crear el acceso directo: {e}")
 
 # Función genérica para manejar errores
 def manejar_error(mensaje, error):
@@ -157,4 +187,8 @@ def shutdown():
     return "Servidor apagado correctamente."
 
 if __name__ == "__main__":
+    # Crear acceso directo si no existe
+    create_desktop_shortcut()
+
+    # Ejecutar la aplicación Flask
     app.run(debug=True)

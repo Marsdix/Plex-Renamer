@@ -1,8 +1,10 @@
 import os
+import sys
 import subprocess
 import webbrowser
 from threading import Timer
 import platform
+from win32com.client import Dispatch  # Para crear accesos directos en Windows
 
 # Configuración del entorno de Flask
 os.environ.setdefault("FLASK_APP", "app.py")  # Nombre del archivo Flask principal
@@ -18,6 +20,34 @@ def open_browser():
         print(f"Navegador abierto en {url}")
     except Exception as e:
         print(f"Error al abrir el navegador: {e}")
+
+def create_desktop_shortcut():
+    """
+    Crea un acceso directo en el escritorio para ejecutar la aplicación.
+    """
+    try:
+        desktop = os.path.join(os.path.join(os.environ["USERPROFILE"]), "Desktop")  # Ruta al escritorio
+        shortcut_path = os.path.join(desktop, "Renombrador Plex.lnk")
+        target_path = os.path.abspath("app.py")  # Ruta del script principal
+        icon_path = os.path.join(os.path.dirname(target_path), "static", "icons", "palomitera.ico")
+
+        # Comprobar si ya existe el acceso directo
+        if os.path.exists(shortcut_path):
+            print("El acceso directo ya existe en el escritorio.")
+            return
+
+        # Crear el acceso directo
+        shell = Dispatch("WScript.Shell")
+        shortcut = shell.CreateShortcut(shortcut_path)
+        shortcut.TargetPath = sys.executable  # Ruta del ejecutable de Python
+        shortcut.Arguments = f'"{target_path}"'  # Pasa el archivo app.py como argumento
+        shortcut.WorkingDirectory = os.path.dirname(target_path)
+        shortcut.IconLocation = icon_path if os.path.exists(icon_path) else ""
+        shortcut.save()
+
+        print(f"Acceso directo creado en el escritorio: {shortcut_path}")
+    except Exception as e:
+        print(f"Error al crear el acceso directo: {e}")
 
 def run_flask_app():
     """
@@ -50,6 +80,9 @@ def run_flask_app():
         exit(1)
 
 if __name__ == "__main__":
+    # Crear el acceso directo en el escritorio
+    create_desktop_shortcut()
+
     # Abrir el navegador después de 1 segundo para que Flask inicie correctamente
     Timer(1, open_browser).start()
 
