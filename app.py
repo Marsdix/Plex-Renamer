@@ -2,21 +2,35 @@ from flask import Flask, render_template, request
 import os
 import signal
 import sys
+import logging  # Para manejo de logs
+
+# Configuración de registros
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
+
+# Función genérica para manejar errores
+def manejar_error(mensaje, error):
+    logger.error(f"{mensaje}: {error}")
+    return f"{mensaje}: {error}"
 
 # Funciones para crear estructuras
 def crear_estructura_peliculas(ruta_base, nombre_pelicula):
     try:
+        if not os.path.exists(ruta_base):
+            return f"Ruta base '{ruta_base}' no existe."
         ruta_pelicula = os.path.join(ruta_base, nombre_pelicula)
         os.makedirs(ruta_pelicula, exist_ok=True)
         os.makedirs(os.path.join(ruta_pelicula, "Extras"), exist_ok=True)
         return f"Película '{nombre_pelicula}' creada con éxito en '{ruta_base}'."
     except Exception as e:
-        return f"Error al crear la película: {str(e)}"
+        return manejar_error("Error al crear la película", e)
 
 def crear_estructura_series(ruta_base, nombre_serie, temporadas):
     try:
+        if not os.path.exists(ruta_base):
+            return f"Ruta base '{ruta_base}' no existe."
         ruta_serie = os.path.join(ruta_base, nombre_serie)
         os.makedirs(ruta_serie, exist_ok=True)
         for i in range(1, temporadas + 1):
@@ -24,31 +38,37 @@ def crear_estructura_series(ruta_base, nombre_serie, temporadas):
         os.makedirs(os.path.join(ruta_serie, "Extras"), exist_ok=True)
         return f"Serie '{nombre_serie}' creada con éxito en '{ruta_base}' con {temporadas} temporadas."
     except Exception as e:
-        return f"Error al crear la serie: {str(e)}"
+        return manejar_error("Error al crear la serie", e)
 
 def crear_estructura_documentales(ruta_base, nombre_documental):
     try:
+        if not os.path.exists(ruta_base):
+            return f"Ruta base '{ruta_base}' no existe."
         ruta_documental = os.path.join(ruta_base, nombre_documental)
         os.makedirs(ruta_documental, exist_ok=True)
         os.makedirs(os.path.join(ruta_documental, "Extras"), exist_ok=True)
         return f"Documental '{nombre_documental}' creado con éxito en '{ruta_base}'."
     except Exception as e:
-        return f"Error al crear el documental: {str(e)}"
+        return manejar_error("Error al crear el documental", e)
 
 # Funciones para agregar carpetas 'Extras'
 def agregar_extras(ruta_base):
     try:
+        if not os.path.exists(ruta_base):
+            return f"Ruta base '{ruta_base}' no existe."
         carpetas = [f for f in os.listdir(ruta_base) if os.path.isdir(os.path.join(ruta_base, f))]
         for carpeta in carpetas:
             ruta_extras = os.path.join(ruta_base, carpeta, "Extras")
             os.makedirs(ruta_extras, exist_ok=True)
         return f"Carpetas 'Extras' añadidas con éxito en todas las carpetas de '{ruta_base}'."
     except Exception as e:
-        return f"Error al agregar carpetas 'Extras': {str(e)}"
+        return manejar_error("Error al agregar carpetas 'Extras'", e)
 
 # Renombrar series automáticamente
 def renombrar_series_automatico(ruta_base, nombre_serie):
     try:
+        if not os.path.exists(ruta_base):
+            return f"Ruta base '{ruta_base}' no existe."
         carpetas = [f for f in os.listdir(ruta_base) if os.path.isdir(os.path.join(ruta_base, f)) and f.startswith("Season")]
         if not carpetas:
             return "No se encontraron carpetas de temporadas en el formato 'Season XX'."
@@ -58,8 +78,7 @@ def renombrar_series_automatico(ruta_base, nombre_serie):
             temporada = carpeta.split(" ")[1]
             ruta_temporada = os.path.join(ruta_base, carpeta)
             archivos = sorted(os.listdir(ruta_temporada))
-            contador = 1
-            for archivo in archivos:
+            for contador, archivo in enumerate(archivos, start=1):
                 ruta_completa = os.path.join(ruta_temporada, archivo)
                 if os.path.isdir(ruta_completa):
                     continue
@@ -68,10 +87,9 @@ def renombrar_series_automatico(ruta_base, nombre_serie):
                 nuevo_nombre = f"{nombre_serie} - S{temporada}{numero_episodio}{extension}"
                 ruta_nueva = os.path.join(ruta_temporada, nuevo_nombre)
                 os.rename(ruta_completa, ruta_nueva)
-                contador += 1
         return f"Renombrado automático completo para la serie '{nombre_serie}'."
     except Exception as e:
-        return f"Error al renombrar la serie: {str(e)}"
+        return manejar_error("Error al renombrar la serie", e)
 
 @app.route("/")
 def index():
