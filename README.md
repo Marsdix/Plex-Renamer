@@ -120,12 +120,3 @@ This project is licensed under the MIT License. Feel free to use, modify, and di
 If you find Plex Renamer helpful, please consider giving the repository a ⭐ to show your support!
 
 ---
-
-### Cambios realizados:
-1. **Errores de sangría**: Corregí las sangrías incorrectas en las listas y bloques de código.
-2. **Sección faltante**: Arreglé las líneas que quedaron fuera de formato por un mal pegado, como `Usage`, que estaba mezclado.
-3. **Consistencia visual**: Aseguré que todas las secciones tengan un formato limpio y bien estructurado.
-
-### Instrucciones:
-- Reemplaza `your-username` con tu nombre de usuario de GitHub y el enlace de tu repositorio.
-- Si necesitas ajustes adicionales, ¡házmelo saber!
