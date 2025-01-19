@@ -3,13 +3,31 @@ import os
 import signal
 import sys
 import logging  # Para manejo de logs
+from threading import Timer  # Para abrir el navegador automáticamente
+import webbrowser  # Para manejar el navegador automáticamente
 from win32com.client import Dispatch  # Para crear accesos directos en Windows
 
 # Configuración de registros
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
-app = Flask(__name__)
+# Ajustar rutas dinámicas si se ejecuta empaquetado
+if getattr(sys, 'frozen', False):
+    base_path = sys._MEIPASS  # Ruta temporal creada por PyInstaller
+else:
+    base_path = os.path.dirname(os.path.abspath(__file__))
+
+template_folder = os.path.join(base_path, "templates")
+static_folder = os.path.join(base_path, "static")
+
+app = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
+
+# Función para abrir automáticamente el navegador
+def open_browser():
+    """
+    Abre automáticamente el navegador en la dirección del servidor Flask.
+    """
+    webbrowser.open_new("http://127.0.0.1:5000/")
 
 # Función para crear acceso directo en el escritorio
 def create_desktop_shortcut():
@@ -19,8 +37,8 @@ def create_desktop_shortcut():
     try:
         desktop = os.path.join(os.path.join(os.environ["USERPROFILE"]), "Desktop")  # Ruta al escritorio
         shortcut_path = os.path.join(desktop, "Renombrador Plex.lnk")
-        target_path = os.path.abspath(sys.argv[0])  # Ruta del script actual
-        icon_path = os.path.join(os.path.dirname(target_path), "static", "icons", "palomitera.ico")
+        target_path = os.path.abspath(sys.argv[0])  # Ruta del script actual o ejecutable
+        icon_path = os.path.join(static_folder, "icons", "palomitera.ico")
 
         # Comprobar si ya existe el acceso directo
         if os.path.exists(shortcut_path):
@@ -30,7 +48,7 @@ def create_desktop_shortcut():
         # Crear el acceso directo
         shell = Dispatch("WScript.Shell")
         shortcut = shell.CreateShortcut(shortcut_path)
-        shortcut.TargetPath = sys.executable  # Ruta del ejecutable de Python
+        shortcut.TargetPath = sys.executable  # Ruta del ejecutable de Python o .exe
         shortcut.Arguments = f'"{target_path}"'  # Pasa el archivo como argumento
         shortcut.WorkingDirectory = os.path.dirname(target_path)
         shortcut.IconLocation = icon_path if os.path.exists(icon_path) else ""
@@ -190,5 +208,8 @@ if __name__ == "__main__":
     # Crear acceso directo si no existe
     create_desktop_shortcut()
 
+    # Abrir navegador automáticamente después de iniciar el servidor Flask
+    Timer(1, open_browser).start()
+
     # Ejecutar la aplicación Flask
-    app.run(debug=True)
+    app.run(debug=False)
