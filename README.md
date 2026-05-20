@@ -1,118 +1,63 @@
-# 📁 Plex Renamer
+# Plex Renamer
 
-**Plex Renamer** is a tool designed to help you organize your media library in a way that's fully compatible with **Plex**. Whether it's renaming your series, creating folders for movies, series, or documents, or adding "extras" folders, Plex Renamer makes it easy to maintain a clean and structured media library.
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![PyInstaller](https://img.shields.io/badge/PyInstaller-3670A0?style=flat-square&logo=python&logoColor=white)
+![Status](https://img.shields.io/badge/status-in_development-orange?style=flat-square)
+![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
 
----
-
-## 🚀 Features
-
-- 🔄 **Automatic renaming**: Rename your series and media files based on your preferences.
-- 🗂️ **Folder creation**: Automatically create folders for:
-  - 📺 Series
-  - 🎥 Movies
-  - 📄 Documents
-- ➕ **Extras support**: Add "Extras" folders to existing series or movies for additional content.
-- 🎯 **Plex compatibility**: Ensure your media files and folders are organized in a way that Plex understands perfectly.
-- 🖥️ **Two versions available**:
-  - A precompiled `.exe` file for easy use.
-  - A Python script for manual installation and customization.
+A CLI tool I built because I needed it. Plex Renamer organizes your media library into the folder structure and naming conventions that Plex Media Server expects — automatically.
 
 ---
 
-## 📥 Installation
+## What it does
 
-You can use **Plex Renamer** in two ways: by downloading the `.exe` file (recommended for simplicity) or by running the Python script manually.
-
-### Option 1: Using the `.exe` File (Recommended)
-1. Download the latest `.exe` file from the [Releases](https://github.com/Marsdix/Plex-Renamer/releases/tag/v1.0.0).
-2. Double-click the `.exe` file to launch Plex Renamer.
-3. Follow the on-screen instructions to organize your media.
-4. The first time you run the `.exe`, it will create a desktop shortcut named **Plex Renamer**, which you can use to open the program directly in the future.
-
-> **Note**: The `.exe` file is standalone and does not require Python to be installed on your system.
+- **Renames** series and movies to match Plex naming conventions
+- **Generates** the folder structure for series, movies, and documents
+- **Adds** Extras folders to existing series or movies
+- **Two ways to run** — precompiled `.exe` (no Python needed) or Python script
 
 ---
 
-### Option 2: Using the Python Script (Manual Installation)
+## Installation
 
-1. **Install Python**:
-   - Download the latest version of Python from [python.org](https://www.python.org/).
-   - During installation:
-     - **Check the box** for "Add Python to PATH".
-     - Choose the option to install Python for all users (recommended).
-   - Verify the installation by running this command in your terminal or command prompt:
-     ```bash
-     python --version
-     ```
+### Option 1 — `.exe` (easiest)
 
-2. **Download the files**:
-   - Go to the [repository](https://github.com/Marsdix/Plex-Renamer).
-   - Click the green **"Code"** button and select **"Download ZIP"**.
-   - Extract the ZIP file to a folder on your computer.
+1. Download the latest `.exe` from [Releases](https://github.com/Marsdix/Plex-Renamer/releases/tag/v1.0.0)
+2. Double-click to run — no Python required
+3. On first launch it creates a **Plex Renamer** shortcut on your desktop
 
-3. **Run the setup script**:
-   - Navigate to the folder where you extracted the files.
-   - Double-click on `setup.py`.
-   - This will create a desktop shortcut named **Plex Renamer**.
+### Option 2 — Python script
 
-4. **Run the main Python script**:
-   - After running `setup.py`, you can use the **Plex Renamer** shortcut on your desktop to start the program directly.
-   - **Important**: Place the downloaded folder in a permanent location. The desktop shortcut will point to the current folder location. If you move the folder later, the shortcut will stop working, and you’ll need to run `setup.py` again to generate a new shortcut.
+**Requirements:** Python 3.x with "Add Python to PATH" checked during install.
+
+```bash
+# Verify Python is installed
+python --version
+```
+
+1. Download the repo as ZIP → extract to a permanent folder
+2. Double-click `setup.py` — creates a desktop shortcut
+3. Use the shortcut to launch the app
+
+> Keep the folder in a permanent location. Moving it later will break the shortcut — just run `setup.py` again to fix it.
 
 ---
 
-## 📖 Usage
+## Usage
 
-### For the `.exe` Version:
-1. Double-click the `.exe` file to open Plex Renamer.
-2. Select the folder containing your media files.
-3. Follow the instructions to rename and organize your files automatically.
-
-### For the Python Version:
-1. Ensure you’ve completed the steps in the **Installation** section.
-2. Use the desktop shortcut created by `setup.py` to launch Plex Renamer.
-3. Follow the prompts to:
-   - Select the folder with your media files.
-   - Choose the renaming pattern or use the default one.
-4. Check the output folder to see your organized media library.
+1. Open Plex Renamer (shortcut or `.exe`)
+2. Select the folder containing your media files
+3. Follow the prompts — renamed and organized files appear in the output folder
 
 ---
 
-## 🛠️ Technologies Used
+## Tech
 
-- **Languages**:
-  - Python (for core logic)
-  - JavaScript (if applicable for any GUI or web functionality).
-- **Tools**:
-  - PyInstaller: Used to compile the Python script into a `.exe` file for easier distribution.
-  - Libraries: Examples include `os`, `shutil`, or other Python modules for file handling.
+- **Python** — core logic and file handling (`os`, `shutil`)
+- **PyInstaller** — compiles the script into a standalone `.exe`
 
 ---
 
-## 🤝 Contributing
+## License
 
-Contributions are welcome! If you have ideas to improve Plex Renamer or want to report a bug, follow these steps:
-
-1. Fork this repository.
-2. Create a new branch for your feature or fix:
-   ```bash
-   git checkout -b feature-name
-Commit your changes:
-bash
-Copiar
-Editar
-git commit -m "Add new feature or fix bug"
-Push to your branch:
-bash
-Copiar
-Editar
-git push origin feature-name
-Open a Pull Request and describe your changes.
-📄 License
-This project is licensed under the MIT License. Feel free to use, modify, and distribute this project as needed.
-
-🌟 Acknowledgments
-Thanks to the Plex community for inspiring this project.
-Special thanks to everyone providing feedback and support to improve Plex Renamer.
-⭐ Show Your Support
-If you find Plex Renamer helpful, please consider giving the repository a ⭐ to show your support!
+MIT — use it, modify it, do what you need with it.
