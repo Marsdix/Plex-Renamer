@@ -1,9 +1,13 @@
+{% set page_icon = "fas fa-tv" %}
+{% set page_title_key = "nav_series_h" %}
+{% set page_subtitle_key = "series_page_subtitle" %}
+{% set show_back = true %}
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ lang }}">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Crear Series — Plex Renamer</title>
+    <title>{{ t('nav_series_h') }} — Plex Renamer</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Baloo+2:wght@400;500;600;700&display=swap"
@@ -14,58 +18,44 @@
     <link rel="icon" href="/static/icons/favicon.ico" type="image/x-icon" />
   </head>
   <body>
-    <header class="app-header">
-      <div class="header-inner">
-        <a href="/" class="btn-glass">
-          <i class="fas fa-arrow-left"></i> Inicio
-        </a>
-        <div class="brand">
-          <div class="brand-icon"><i class="fas fa-tv"></i></div>
-          <div>
-            <h1>Crear Series</h1>
-            <span class="subtitle">Temporadas y carpeta Extras incluidas</span>
-          </div>
-        </div>
-        <a href="/shutdown" class="btn-glass danger">
-          <i class="fas fa-power-off"></i> Salir
-        </a>
-      </div>
-    </header>
+    {% include "_header.html" %}
 
     <main>
       <div class="form-split">
         <section class="form-card">
           <div class="form-card-header">
             <i class="fas fa-folder-tree"></i>
-            <h2>Nueva serie</h2>
+            <h2>{{ t('series_card_title') }}</h2>
           </div>
-          <p class="form-card-desc">
-            Se crearán carpetas <code>Season 01</code>, <code>Season 02</code>, … y una <code>Extras</code>.
-          </p>
+          <p class="form-card-desc">{{ t('series_card_desc') }}</p>
 
           {% if mensaje %}
-          <div class="alert {% if 'éxito' in mensaje or 'creada' in mensaje %}alert-success{% else %}alert-error{% endif %}" role="status">
-            <i class="fas fa-{% if 'éxito' in mensaje or 'creada' in mensaje %}circle-check{% else %}circle-exclamation{% endif %}"></i>
+          <div class="alert {% if 'éxito' in mensaje or 'creada' in mensaje or 'success' in mensaje %}alert-success{% else %}alert-error{% endif %}" role="status">
+            <i class="fas fa-{% if 'éxito' in mensaje or 'creada' in mensaje or 'success' in mensaje %}circle-check{% else %}circle-exclamation{% endif %}"></i>
             <span>{{ mensaje }}</span>
           </div>
           {% endif %}
 
           <form action="/crear_series" method="post" novalidate>
             <div class="field">
-              <label for="ruta">Ruta base <span class="req">*</span></label>
+              <label for="ruta">
+                {{ t('field_base_path') }} <span class="req">{{ t('field_required') }}</span>
+              </label>
               <input
                 type="text"
                 id="ruta"
                 name="ruta"
-                placeholder="/Volumes/Media/Series"
+                placeholder="/Volumes/Media/TV Shows"
                 autocomplete="off"
                 required
               />
-              <span class="field-hint">Carpeta donde se creará la serie.</span>
+              <span class="field-hint">{{ t('hint_base_path_series') }}</span>
             </div>
 
             <div class="field">
-              <label for="nombre">Nombre de la serie <span class="req">*</span></label>
+              <label for="nombre">
+                {{ t('series_field_name') }} <span class="req">{{ t('field_required') }}</span>
+              </label>
               <input
                 type="text"
                 id="nombre"
@@ -77,7 +67,9 @@
             </div>
 
             <div class="field">
-              <label for="temporadas">Número de temporadas <span class="req">*</span></label>
+              <label for="temporadas">
+                {{ t('series_field_seasons') }} <span class="req">{{ t('field_required') }}</span>
+              </label>
               <input
                 type="number"
                 id="temporadas"
@@ -87,11 +79,11 @@
                 max="99"
                 required
               />
-              <span class="field-hint">Una carpeta por temporada en formato <code>Season XX</code>.</span>
+              <span class="field-hint">{{ t('hint_seasons') }}</span>
             </div>
 
             <button type="submit" class="btn-primary">
-              <i class="fas fa-plus"></i> Crear serie
+              <i class="fas fa-plus"></i> {{ t('series_submit') }}
             </button>
           </form>
         </section>
@@ -101,23 +93,23 @@
           <div class="poster-frame">
             <img
               id="random-banner"
-              src="/static/images/series_banner1.png"
-              alt="Cartel decorativo de serie"
+              src="{{ poster_url or '/static/images/series_banner1.png' }}"
+              alt="{{ t('series_poster_label') }}"
               loading="lazy"
             />
             <div class="poster-caption">
-              <span>Series</span>
-              Temporadas y Extras
+              <span>{{ t('series_poster_label') }}</span>
+              {{ t('series_poster_caption') }}
             </div>
           </div>
         </aside>
       </div>
     </main>
 
-    <footer class="app-footer">
-      © 2024 <span>Gestor de Medios</span> · Plex Renamer
-    </footer>
+    {% include "_footer.html" %}
 
+    {% if not poster_url %}
     <script src="/static/js/series_banner_randomizer.js"></script>
+    {% endif %}
   </body>
 </html>

@@ -1,9 +1,13 @@
+{% set page_icon = "fas fa-circle-info" %}
+{% set page_title_key = "nav_info_h" %}
+{% set page_subtitle_key = "info_page_subtitle" %}
+{% set show_back = true %}
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ lang }}">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Información — Plex Renamer</title>
+    <title>{{ t('nav_info_h') }} — Plex Renamer</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Baloo+2:wght@400;500;600;700&display=swap"
@@ -14,33 +18,14 @@
     <link rel="icon" href="/static/icons/favicon.ico" type="image/x-icon" />
   </head>
   <body>
-    <header class="app-header">
-      <div class="header-inner">
-        <a href="/" class="btn-glass">
-          <i class="fas fa-arrow-left"></i> Inicio
-        </a>
-        <div class="brand">
-          <div class="brand-icon"><i class="fas fa-circle-info"></i></div>
-          <div>
-            <h1>Información</h1>
-            <span class="subtitle">Convenciones de Plex y guía rápida</span>
-          </div>
-        </div>
-        <a href="/shutdown" class="btn-glass danger">
-          <i class="fas fa-power-off"></i> Salir
-        </a>
-      </div>
-    </header>
+    {% include "_header.html" %}
 
     <main>
       <article class="content-card">
-        <h2><i class="fas fa-folder-tree"></i> Estructura de carpetas</h2>
-        <p>
-          Plex detecta el contenido cuando los nombres siguen estas convenciones.
-          Esta app crea las carpetas automáticamente — esto es lo que genera:
-        </p>
+        <h2><i class="fas fa-folder-tree"></i> {{ t('info_heading_structure') }}</h2>
+        <p>{{ t('info_intro') }}</p>
 
-        <div class="folder-tree" aria-label="Estructura de carpetas">
+        <div class="folder-tree" aria-label="{{ t('info_heading_structure') }}">
           <div class="item"><i class="fas fa-folder icon-root"></i><span class="folder-name">/Movies/</span></div>
           <div class="item indent-1"><i class="fas fa-folder icon-mid"></i><span class="folder-name">/Movie Title (Year)/</span></div>
           <div class="item indent-2"><i class="fas fa-folder icon-leaf"></i><span class="folder-name">/Extras/</span></div>
@@ -56,25 +41,23 @@
           <div class="item indent-2"><i class="fas fa-folder icon-leaf"></i><span class="folder-name">/Extras/</span></div>
         </div>
 
-        <h3>Convenciones</h3>
+        <h3>{{ t('info_heading_conventions') }}</h3>
         <ul>
-          <li>Películas y documentales: <code>Título (Año)</code>.</li>
-          <li>Series: temporadas en formato <code>Season XX</code>.</li>
-          <li>Episodios: <code>Nombre - S01E01.ext</code>.</li>
-          <li>Carpeta <code>Extras</code> dentro de cada medio.</li>
+          <li>{{ t('info_conv_movies_docs') }}</li>
+          <li>{{ t('info_conv_series') }}</li>
+          <li>{{ t('info_conv_episodes') }}</li>
+          <li>{{ t('info_conv_extras') }}</li>
         </ul>
 
-        <h3>Cómo usar la app</h3>
+        <h3>{{ t('info_heading_usage') }}</h3>
         <ul>
-          <li><strong>Crear Películas / Series / Documentales</strong> — genera la estructura desde cero.</li>
-          <li><strong>Agregar Extras</strong> — añade la carpeta <code>Extras</code> en lote sobre una biblioteca existente.</li>
-          <li><strong>Renombrar Series</strong> — renombra todos los archivos de cada <code>Season XX</code> al formato <code>SXXEXX</code>.</li>
+          <li>{{ t('info_usage_create') }}</li>
+          <li>{{ t('info_usage_extras') }}</li>
+          <li>{{ t('info_usage_rename') }}</li>
         </ul>
       </article>
     </main>
 
-    <footer class="app-footer">
-      © 2024 <span>Gestor de Medios</span> · Plex Renamer
-    </footer>
+    {% include "_footer.html" %}
   </body>
 </html>

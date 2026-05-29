@@ -1,9 +1,13 @@
+{% set page_icon = "fas fa-film" %}
+{% set page_title_key = "brand" %}
+{% set page_subtitle_key = "brand_subtitle" %}
+{% set show_back = false %}
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ lang }}">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gestor de Medios — Plex Renamer</title>
+    <title>{{ t('brand') }} — Plex Renamer</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Baloo+2:wght@400;500;600;700&display=swap"
@@ -14,34 +18,20 @@
     <link rel="icon" href="/static/icons/favicon.ico" type="image/x-icon" />
   </head>
   <body>
-    <header class="app-header">
-      <div class="header-inner">
-        <a href="/shutdown" class="btn-glass danger" aria-label="Salir de la aplicación">
-          <i class="fas fa-power-off"></i> Salir
-        </a>
-        <div class="brand">
-          <div class="brand-icon"><i class="fas fa-film"></i></div>
-          <div>
-            <h1>Gestor de Medios</h1>
-            <span class="subtitle">Plex Renamer · Organiza tu biblioteca</span>
-          </div>
-        </div>
-        <span style="width: 92px"></span>
-      </div>
-    </header>
+    {% include "_header.html" %}
 
     <main>
       <div class="page-intro">
-        <h2>¿Qué quieres organizar hoy?</h2>
-        <p>Crea estructuras, añade Extras o renombra archivos para que Plex los detecte correctamente.</p>
+        <h2>{{ t('index_title') }}</h2>
+        <p>{{ t('index_subtitle') }}</p>
       </div>
 
-      <nav class="nav-grid" aria-label="Acciones principales">
+      <nav class="nav-grid" aria-label="{{ t('index_nav_label') }}">
         <a href="{{ url_for('crear_peliculas') }}" class="nav-tile">
           <div class="nav-tile-icon"><i class="fas fa-film"></i></div>
           <div class="nav-tile-content">
-            <h3>Crear Películas</h3>
-            <p>Genera carpetas con estructura Plex para películas.</p>
+            <h3>{{ t('nav_movies_h') }}</h3>
+            <p>{{ t('nav_movies_p') }}</p>
           </div>
           <i class="fas fa-arrow-right nav-tile-arrow" aria-hidden="true"></i>
         </a>
@@ -49,8 +39,8 @@
         <a href="{{ url_for('crear_series') }}" class="nav-tile">
           <div class="nav-tile-icon"><i class="fas fa-tv"></i></div>
           <div class="nav-tile-content">
-            <h3>Crear Series</h3>
-            <p>Crea carpetas con temporadas y carpeta Extras incluida.</p>
+            <h3>{{ t('nav_series_h') }}</h3>
+            <p>{{ t('nav_series_p') }}</p>
           </div>
           <i class="fas fa-arrow-right nav-tile-arrow" aria-hidden="true"></i>
         </a>
@@ -58,8 +48,8 @@
         <a href="{{ url_for('crear_documentales') }}" class="nav-tile">
           <div class="nav-tile-icon"><i class="fas fa-video"></i></div>
           <div class="nav-tile-content">
-            <h3>Crear Documentales</h3>
-            <p>Estructura específica para documentales con Extras.</p>
+            <h3>{{ t('nav_docs_h') }}</h3>
+            <p>{{ t('nav_docs_p') }}</p>
           </div>
           <i class="fas fa-arrow-right nav-tile-arrow" aria-hidden="true"></i>
         </a>
@@ -67,8 +57,8 @@
         <a href="{{ url_for('agregar_extras_view') }}" class="nav-tile">
           <div class="nav-tile-icon"><i class="fas fa-star"></i></div>
           <div class="nav-tile-content">
-            <h3>Agregar Extras</h3>
-            <p>Añade la carpeta Extras a todas las carpetas existentes.</p>
+            <h3>{{ t('nav_extras_h') }}</h3>
+            <p>{{ t('nav_extras_p') }}</p>
           </div>
           <i class="fas fa-arrow-right nav-tile-arrow" aria-hidden="true"></i>
         </a>
@@ -76,8 +66,8 @@
         <a href="{{ url_for('renombrar_series') }}" class="nav-tile">
           <div class="nav-tile-icon"><i class="fas fa-pen-to-square"></i></div>
           <div class="nav-tile-content">
-            <h3>Renombrar Series</h3>
-            <p>Renombrado automático tipo <em>S01E01</em> por temporada.</p>
+            <h3>{{ t('nav_rename_h') }}</h3>
+            <p>{{ t('nav_rename_p') }}</p>
           </div>
           <i class="fas fa-arrow-right nav-tile-arrow" aria-hidden="true"></i>
         </a>
@@ -85,16 +75,14 @@
         <a href="{{ url_for('info') }}" class="nav-tile">
           <div class="nav-tile-icon"><i class="fas fa-circle-info"></i></div>
           <div class="nav-tile-content">
-            <h3>Información</h3>
-            <p>Convenciones de Plex y guía de uso de la aplicación.</p>
+            <h3>{{ t('nav_info_h') }}</h3>
+            <p>{{ t('nav_info_p') }}</p>
           </div>
           <i class="fas fa-arrow-right nav-tile-arrow" aria-hidden="true"></i>
         </a>
       </nav>
     </main>
 
-    <footer class="app-footer">
-      © 2024 <span>Gestor de Medios</span> · Plex Renamer
-    </footer>
+    {% include "_footer.html" %}
   </body>
 </html>

@@ -1,0 +1,44 @@
+{# Shared header partial.
+
+   Variables (set with {% set %} before include):
+     page_icon          FA classes for the brand icon (e.g. "fas fa-film")
+     page_title_key     translation key for the page title (e.g. "movies_card_title")
+     page_subtitle_key  translation key for the subtitle line under the title
+     show_back          true on inner pages to show "Home" button on the left
+#}
+<header class="app-header">
+  <div class="header-inner">
+    {% if show_back %}
+    <a href="/" class="btn-glass">
+      <i class="fas fa-arrow-left"></i> {{ t('home') }}
+    </a>
+    {% else %}
+    <a href="/shutdown" class="btn-glass danger" aria-label="{{ t('exit') }}">
+      <i class="fas fa-power-off"></i> {{ t('exit') }}
+    </a>
+    {% endif %}
+
+    <div class="brand">
+      <div class="brand-icon"><i class="{{ page_icon }}"></i></div>
+      <div>
+        <h1>{{ t(page_title_key) }}</h1>
+        <span class="subtitle">{{ t(page_subtitle_key) }}</span>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <a href="{{ url_for('set_language', lang='es') }}" class="{% if lang == 'es' %}active{% endif %}">ES</a>
+        <a href="{{ url_for('set_language', lang='en') }}" class="{% if lang == 'en' %}active{% endif %}">EN</a>
+      </div>
+      <a href="{{ url_for('settings') }}" class="btn-glass" aria-label="{{ t('settings') }}">
+        <i class="fas fa-gear"></i> {{ t('settings') }}
+      </a>
+      {% if show_back %}
+      <a href="/shutdown" class="btn-glass danger">
+        <i class="fas fa-power-off"></i> {{ t('exit') }}
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</header>

@@ -1,9 +1,13 @@
+{% set page_icon = "fas fa-film" %}
+{% set page_title_key = "nav_movies_h" %}
+{% set page_subtitle_key = "movies_page_subtitle" %}
+{% set show_back = true %}
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ lang }}">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Crear Películas — Plex Renamer</title>
+    <title>{{ t('nav_movies_h') }} — Plex Renamer</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Baloo+2:wght@400;500;600;700&display=swap"
@@ -14,38 +18,20 @@
     <link rel="icon" href="/static/icons/favicon.ico" type="image/x-icon" />
   </head>
   <body>
-    <header class="app-header">
-      <div class="header-inner">
-        <a href="/" class="btn-glass">
-          <i class="fas fa-arrow-left"></i> Inicio
-        </a>
-        <div class="brand">
-          <div class="brand-icon"><i class="fas fa-film"></i></div>
-          <div>
-            <h1>Crear Películas</h1>
-            <span class="subtitle">Carpeta + carpeta Extras lista para Plex</span>
-          </div>
-        </div>
-        <a href="/shutdown" class="btn-glass danger">
-          <i class="fas fa-power-off"></i> Salir
-        </a>
-      </div>
-    </header>
+    {% include "_header.html" %}
 
     <main>
       <div class="form-split">
         <section class="form-card">
           <div class="form-card-header">
             <i class="fas fa-folder-plus"></i>
-            <h2>Nueva película</h2>
+            <h2>{{ t('movies_card_title') }}</h2>
           </div>
-          <p class="form-card-desc">
-            Crea una carpeta con el nombre exacto que Plex espera y una carpeta <code>Extras</code> dentro.
-          </p>
+          <p class="form-card-desc">{{ t('movies_card_desc') }}</p>
 
           {% if mensaje %}
-          <div class="alert {% if 'éxito' in mensaje or 'creada' in mensaje %}alert-success{% else %}alert-error{% endif %}" role="status">
-            <i class="fas fa-{% if 'éxito' in mensaje or 'creada' in mensaje %}circle-check{% else %}circle-exclamation{% endif %}"></i>
+          <div class="alert {% if 'éxito' in mensaje or 'creada' in mensaje or 'success' in mensaje %}alert-success{% else %}alert-error{% endif %}" role="status">
+            <i class="fas fa-{% if 'éxito' in mensaje or 'creada' in mensaje or 'success' in mensaje %}circle-check{% else %}circle-exclamation{% endif %}"></i>
             <span>{{ mensaje }}</span>
           </div>
           {% endif %}
@@ -53,22 +39,22 @@
           <form action="/crear_peliculas" method="post" novalidate>
             <div class="field">
               <label for="ruta">
-                Ruta base <span class="req">*</span>
+                {{ t('field_base_path') }} <span class="req">{{ t('field_required') }}</span>
               </label>
               <input
                 type="text"
                 id="ruta"
                 name="ruta"
-                placeholder="/Volumes/Media/Películas"
+                placeholder="/Volumes/Media/Movies"
                 autocomplete="off"
                 required
               />
-              <span class="field-hint">Carpeta donde se creará la película.</span>
+              <span class="field-hint">{{ t('hint_base_path_movies') }}</span>
             </div>
 
             <div class="field">
               <label for="nombre">
-                Nombre de la película <span class="req">*</span>
+                {{ t('movies_field_name') }} <span class="req">{{ t('field_required') }}</span>
               </label>
               <input
                 type="text"
@@ -78,11 +64,11 @@
                 autocomplete="off"
                 required
               />
-              <span class="field-hint">Formato recomendado: <code>Título (Año)</code>.</span>
+              <span class="field-hint">{{ t('hint_name_movies') }}</span>
             </div>
 
             <button type="submit" class="btn-primary">
-              <i class="fas fa-plus"></i> Crear película
+              <i class="fas fa-plus"></i> {{ t('movies_submit') }}
             </button>
           </form>
         </section>
@@ -92,23 +78,23 @@
           <div class="poster-frame">
             <img
               id="random-banner"
-              src="/static/images/movie_banner1.png"
-              alt="Cartel decorativo de película"
+              src="{{ poster_url or '/static/images/movie_banner1.png' }}"
+              alt="{{ t('movies_poster_label') }}"
               loading="lazy"
             />
             <div class="poster-caption">
-              <span>Películas</span>
-              Carpeta lista para Plex
+              <span>{{ t('movies_poster_label') }}</span>
+              {{ t('movies_poster_caption') }}
             </div>
           </div>
         </aside>
       </div>
     </main>
 
-    <footer class="app-footer">
-      © 2024 <span>Gestor de Medios</span> · Plex Renamer
-    </footer>
+    {% include "_footer.html" %}
 
+    {% if not poster_url %}
     <script src="/static/js/movies_banner_randomizer.js"></script>
+    {% endif %}
   </body>
 </html>

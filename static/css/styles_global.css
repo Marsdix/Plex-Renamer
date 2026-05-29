@@ -204,6 +204,13 @@ a:hover { color: var(--accent-3); }
   color: var(--fg);
 }
 
+.app-header .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
 .app-header .subtitle {
   display: block;
   font-size: 0.78rem;
@@ -725,6 +732,138 @@ main {
 .folder-tree .indent-2 { padding-left: 48px; }
 .folder-tree .indent-3 { padding-left: 72px; }
 
+/* Settings page */
+.settings-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 8px;
+}
+
+.settings-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+}
+
+.settings-status.active {
+  border-color: var(--success-border);
+  color: var(--success-fg);
+}
+
+.settings-status .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--fg-muted);
+}
+
+.settings-status.active .dot {
+  background: var(--success-fg);
+  box-shadow: 0 0 8px var(--success-fg);
+}
+
+.input-with-toggle {
+  position: relative;
+}
+
+.input-with-toggle input {
+  padding-right: 80px;
+}
+
+.input-toggle-btn {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--fg-muted);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  font-family: "Baloo 2", sans-serif;
+  transition: all var(--transition);
+}
+
+.input-toggle-btn:hover {
+  background: var(--surface-hover);
+  color: var(--fg);
+}
+
+.lang-segmented {
+  display: inline-flex;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  gap: 4px;
+}
+
+.lang-segmented input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.lang-segmented label {
+  padding: 7px 18px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--fg-muted);
+  transition: all var(--transition);
+  user-select: none;
+}
+
+.lang-segmented input[type="radio"]:checked + label {
+  background: var(--accent-gradient);
+  color: white;
+  box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+.lang-segmented input[type="radio"]:focus-visible + label {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
+/* Inline ES|EN toggle in header */
+.lang-toggle {
+  display: inline-flex;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.lang-toggle a {
+  padding: 6px 12px;
+  color: var(--fg-muted);
+  text-decoration: none;
+  transition: all var(--transition);
+}
+
+.lang-toggle a.active {
+  background: var(--accent-gradient);
+  color: white;
+}
+
+.lang-toggle a:not(.active):hover {
+  color: var(--fg);
+  background: var(--surface-hover);
+}
+
 /* Success page hero */
 .success-hero {
   text-align: center;
@@ -783,10 +922,15 @@ main {
     padding: 14px 18px;
   }
 
-  .app-header h1 { font-size: 1.15rem; }
-  .app-header .brand { gap: 10px; }
+  .app-header { flex-wrap: wrap; gap: 8px; padding: 12px 16px; }
+  .app-header .header-inner { flex-wrap: wrap; gap: 10px; }
+  .app-header h1 { font-size: 1.1rem; }
+  .app-header .brand { gap: 10px; flex: 1 1 100%; order: 3; justify-content: flex-start; }
   .app-header .brand-icon { width: 32px; height: 32px; font-size: 0.95rem; }
   .app-header .subtitle { display: none; }
+  .app-header .header-actions { gap: 6px; flex-wrap: wrap; }
+  .app-header .header-actions .btn-glass:not(.danger) { padding: 6px 12px; font-size: 0.78rem; }
+  .lang-toggle a { padding: 5px 10px; }
 
   main { padding: 24px 18px 60px; }
 

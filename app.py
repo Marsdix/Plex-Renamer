@@ -1,19 +1,21 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, make_response, url_for
 import os
 import signal
 import sys
-import logging  # Para manejo de logs
-from threading import Timer  # Para abrir el navegador automáticamente
-import webbrowser  # Para manejar el navegador automáticamente
+import logging
+from threading import Timer
+import webbrowser
 import platform
 
-# Configuración de registros
+from config import load_config, save_config, get_default_language
+from translations import STRINGS
+from tmdb import get_random_poster, is_configured as tmdb_configured
+
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
-# Ajustar rutas dinámicas si se ejecuta empaquetado
 if getattr(sys, 'frozen', False):
-    base_path = sys._MEIPASS  # Ruta temporal creada por PyInstaller
+    base_path = sys._MEIPASS
 else:
     base_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -22,14 +24,39 @@ static_folder = os.path.join(base_path, "static")
 
 app = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
 
-# Función para abrir automáticamente el navegador
+
+# --- i18n -------------------------------------------------------------------
+
+SUPPORTED_LANGS = ("es", "en")
+
+
+def current_lang() -> str:
+    cookie = request.cookies.get("lang")
+    if cookie in SUPPORTED_LANGS:
+        return cookie
+    return get_default_language()
+
+
+def t(key: str) -> str:
+    lang = current_lang()
+    return STRINGS.get(lang, STRINGS["es"]).get(key, STRINGS["es"].get(key, key))
+
+
+@app.context_processor
+def inject_globals():
+    return {
+        "t": t,
+        "lang": current_lang(),
+        "tmdb_active": tmdb_configured(),
+    }
+
+
+# --- Open browser + desktop shortcut ---------------------------------------
+
 def open_browser():
-    """
-    Abre automáticamente el navegador en la dirección del servidor Flask.
-    """
     webbrowser.open_new("http://127.0.0.1:5001/")
 
-# Función para crear acceso directo en el escritorio
+
 def create_desktop_shortcut():
     system = platform.system()
     try:
@@ -67,12 +94,14 @@ def create_desktop_shortcut():
     except Exception as e:
         logger.error(f"Error al crear el acceso directo: {e}")
 
-# Función genérica para manejar errores
+
+# --- Domain helpers --------------------------------------------------------
+
 def manejar_error(mensaje, error):
     logger.error(f"{mensaje}: {error}")
     return f"{mensaje}: {error}"
 
-# Funciones para crear estructuras
+
 def crear_estructura_peliculas(ruta_base, nombre_pelicula):
     try:
         if not os.path.exists(ruta_base):
@@ -83,6 +112,7 @@ def crear_estructura_peliculas(ruta_base, nombre_pelicula):
         return f"Película '{nombre_pelicula}' creada con éxito en '{ruta_base}'."
     except Exception as e:
         return manejar_error("Error al crear la película", e)
+
 
 def crear_estructura_series(ruta_base, nombre_serie, temporadas):
     try:
@@ -97,6 +127,7 @@ def crear_estructura_series(ruta_base, nombre_serie, temporadas):
     except Exception as e:
         return manejar_error("Error al crear la serie", e)
 
+
 def crear_estructura_documentales(ruta_base, nombre_documental):
     try:
         if not os.path.exists(ruta_base):
@@ -108,7 +139,7 @@ def crear_estructura_documentales(ruta_base, nombre_documental):
     except Exception as e:
         return manejar_error("Error al crear el documental", e)
 
-# Funciones para agregar carpetas 'Extras'
+
 def agregar_extras(ruta_base):
     try:
         if not os.path.exists(ruta_base):
@@ -121,7 +152,7 @@ def agregar_extras(ruta_base):
     except Exception as e:
         return manejar_error("Error al agregar carpetas 'Extras'", e)
 
-# Renombrar series automáticamente
+
 def renombrar_series_automatico(ruta_base, nombre_serie):
     try:
         if not os.path.exists(ruta_base):
@@ -148,11 +179,14 @@ def renombrar_series_automatico(ruta_base, nombre_serie):
     except Exception as e:
         return manejar_error("Error al renombrar la serie", e)
 
+
+# --- Routes ----------------------------------------------------------------
+
 @app.route("/")
 def index():
     return render_template("index.html")
 
-# Crear películas
+
 @app.route("/crear_peliculas", methods=["GET", "POST"])
 def crear_peliculas():
     mensaje = None
@@ -160,9 +194,10 @@ def crear_peliculas():
         ruta_base = request.form["ruta"]
         nombre_pelicula = request.form["nombre"]
         mensaje = crear_estructura_peliculas(ruta_base, nombre_pelicula)
-    return render_template("crear_peliculas.html", mensaje=mensaje)
+    poster_url = get_random_poster("movie", current_lang())
+    return render_template("crear_peliculas.html", mensaje=mensaje, poster_url=poster_url)
 
-# Crear series
+
 @app.route("/crear_series", methods=["GET", "POST"])
 def crear_series():
     mensaje = None
@@ -171,9 +206,10 @@ def crear_series():
         nombre_serie = request.form["nombre"]
         temporadas = int(request.form["temporadas"])
         mensaje = crear_estructura_series(ruta_base, nombre_serie, temporadas)
-    return render_template("crear_series.html", mensaje=mensaje)
+    poster_url = get_random_poster("tv", current_lang())
+    return render_template("crear_series.html", mensaje=mensaje, poster_url=poster_url)
 
-# Crear documentales
+
 @app.route("/crear_documentales", methods=["GET", "POST"])
 def crear_documentales():
     mensaje = None
@@ -183,7 +219,7 @@ def crear_documentales():
         mensaje = crear_estructura_documentales(ruta_base, nombre_documental)
     return render_template("crear_documentales.html", mensaje=mensaje)
 
-# Añadir carpetas 'Extras'
+
 @app.route("/agregar_extras", methods=["GET", "POST"])
 def agregar_extras_view():
     mensaje = None
@@ -192,7 +228,7 @@ def agregar_extras_view():
         mensaje = agregar_extras(ruta_base)
     return render_template("agregar_extras.html", mensaje=mensaje)
 
-# Renombrar series automáticamente
+
 @app.route("/renombrar_series", methods=["GET", "POST"])
 def renombrar_series():
     mensaje = None
@@ -200,25 +236,55 @@ def renombrar_series():
         ruta_base = request.form["ruta"]
         nombre_serie = request.form["nombre"]
         mensaje = renombrar_series_automatico(ruta_base, nombre_serie)
-    return render_template("renombrar_series.html", mensaje=mensaje)
+    poster_url = get_random_poster("tv", current_lang())
+    return render_template("renombrar_series.html", mensaje=mensaje, poster_url=poster_url)
 
-# Información
+
 @app.route("/info")
 def info():
     return render_template("info.html")
 
-# Cerrar Flask con os.kill
+
+@app.route("/settings", methods=["GET", "POST"])
+def settings():
+    saved = False
+    if request.method == "POST":
+        api_key = request.form.get("tmdb_api_key", "").strip()
+        lang = request.form.get("language", "es")
+        if lang not in SUPPORTED_LANGS:
+            lang = "es"
+        save_config({"tmdb_api_key": api_key, "language": lang})
+        response = make_response(redirect(url_for("settings", saved=1)))
+        response.set_cookie("lang", lang, max_age=60 * 60 * 24 * 365)
+        return response
+
+    saved = request.args.get("saved") == "1"
+    config = load_config()
+    return render_template(
+        "settings.html",
+        saved=saved,
+        tmdb_key=config.get("tmdb_api_key", ""),
+        current_language=current_lang(),
+    )
+
+
+@app.route("/set_language/<lang>")
+def set_language(lang):
+    if lang not in SUPPORTED_LANGS:
+        lang = "es"
+    referer = request.referrer or url_for("index")
+    response = make_response(redirect(referer))
+    response.set_cookie("lang", lang, max_age=60 * 60 * 24 * 365)
+    return response
+
+
 @app.route("/shutdown", methods=["GET"])
 def shutdown():
     os.kill(os.getpid(), signal.SIGINT)
     return "Servidor apagado correctamente."
 
+
 if __name__ == "__main__":
-    # Crear acceso directo si no existe
     create_desktop_shortcut()
-
-    # Abrir navegador automáticamente después de iniciar el servidor Flask
     Timer(1, open_browser).start()
-
-    # Ejecutar la aplicación Flask
     app.run(host="127.0.0.1", port=5001, debug=False)

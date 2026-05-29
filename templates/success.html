@@ -1,9 +1,13 @@
+{% set page_icon = "fas fa-check" %}
+{% set page_title_key = "success_card_title" %}
+{% set page_subtitle_key = "success_page_subtitle" %}
+{% set show_back = true %}
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ lang }}">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Operación exitosa — Plex Renamer</title>
+    <title>{{ t('success_card_title') }} — Plex Renamer</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Baloo+2:wght@400;500;600;700&display=swap"
@@ -14,39 +18,23 @@
     <link rel="icon" href="/static/icons/favicon.ico" type="image/x-icon" />
   </head>
   <body>
-    <header class="app-header">
-      <div class="header-inner">
-        <a href="/" class="btn-glass">
-          <i class="fas fa-arrow-left"></i> Inicio
-        </a>
-        <div class="brand">
-          <div class="brand-icon"><i class="fas fa-check"></i></div>
-          <div>
-            <h1>Éxito</h1>
-            <span class="subtitle">Operación completada</span>
-          </div>
-        </div>
-        <span style="width: 92px"></span>
-      </div>
-    </header>
+    {% include "_header.html" %}
 
     <main>
       <article class="content-card">
         <div class="success-hero">
           <div class="icon-circle"><i class="fas fa-check"></i></div>
-          <h2>¡Operación completada!</h2>
+          <h2>{{ t('success_card_title') }}</h2>
           <p>{{ message }}</p>
         </div>
         <div class="button-row">
           <a href="/" class="btn-glass">
-            <i class="fas fa-house"></i> Volver al inicio
+            <i class="fas fa-house"></i> {{ t('back_home') }}
           </a>
         </div>
       </article>
     </main>
 
-    <footer class="app-footer">
-      © 2024 <span>Gestor de Medios</span> · Plex Renamer
-    </footer>
+    {% include "_footer.html" %}
   </body>
 </html>
