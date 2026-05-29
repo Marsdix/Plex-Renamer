@@ -1,97 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Agregar Extras</title>
+    <title>Agregar Extras — Plex Renamer</title>
 
-    <!-- Bootstrap CSS -->
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Baloo+2:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-
-    <!-- Google Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Baloo+2:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Font Awesome -->
     <link href="/static/fontawesome/css/all.min.css" rel="stylesheet" />
-
-    <!-- Preload -->
-    <script src="/static/js/preload.js" defer></script>
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/static/css/styles_agregar_extras.css" />
-
-    <!-- Favicon -->
+    <link rel="stylesheet" href="/static/css/styles_global.css" />
     <link rel="icon" href="/static/icons/favicon.ico" type="image/x-icon" />
   </head>
   <body>
-    <!-- Header -->
-    <header class="text-center py-5 text-white">
-      <div class="d-flex justify-content-between align-items-center px-4">
-        <a href="/" class="btn btn-light">
-          <i class="fas fa-home"></i> Inicio
+    <header class="app-header">
+      <div class="header-inner">
+        <a href="/" class="btn-glass">
+          <i class="fas fa-arrow-left"></i> Inicio
         </a>
-        <h1 style="font-family: 'Fredoka One', cursive" class="m-0 mx-auto">
-          <i class="fas fa-folder-plus"></i> Agregar Carpeta "Extras"
-        </h1>
+        <div class="brand">
+          <div class="brand-icon"><i class="fas fa-star"></i></div>
+          <div>
+            <h1>Agregar Extras</h1>
+            <span class="subtitle">Carpetas <em>Extras</em> en lote</span>
+          </div>
+        </div>
+        <a href="/shutdown" class="btn-glass danger">
+          <i class="fas fa-power-off"></i> Salir
+        </a>
       </div>
-      <p>Organiza y agrega carpetas de extras a tus medios favoritos.</p>
     </header>
 
-    <!-- Main Content -->
-    <main
-      class="container d-flex align-items-center justify-content-center vh-100"
-    >
-      <div class="w-100" style="max-width: 600px">
-        <!-- Mensaje de notificación -->
-        {% if mensaje %}
-        <div class="alert alert-warning text-center" role="alert">
-          {{ mensaje }}
-        </div>
-        {% endif %}
-        <!-- Formulario -->
-        <form
-          action="/agregar_extras"
-          method="post"
-          class="bg-white p-5 rounded shadow form-container"
-        >
-          <h2 class="mb-4 text-warning">
-            <i class="fas fa-folder-plus"></i> Agregar Extras
-          </h2>
-          <div class="mb-4">
-            <label for="ruta" class="form-label">Ruta Base:</label>
-            <input
-              type="text"
-              id="ruta"
-              name="ruta"
-              class="form-control"
-              placeholder="Introduce la ruta base"
-              required
+    <main>
+      <div class="form-split">
+        <section class="form-card">
+          <div class="form-card-header">
+            <i class="fas fa-folder-tree"></i>
+            <h2>Añadir carpeta Extras</h2>
+          </div>
+          <p class="form-card-desc">
+            Recorre todas las carpetas de la ruta indicada y crea una <code>Extras</code> dentro de cada una si no existe.
+          </p>
+
+          {% if mensaje %}
+          <div class="alert {% if 'éxito' in mensaje or 'añadidas' in mensaje %}alert-success{% else %}alert-error{% endif %}" role="status">
+            <i class="fas fa-{% if 'éxito' in mensaje or 'añadidas' in mensaje %}circle-check{% else %}circle-exclamation{% endif %}"></i>
+            <span>{{ mensaje }}</span>
+          </div>
+          {% endif %}
+
+          <form action="/agregar_extras" method="post" novalidate>
+            <div class="field">
+              <label for="ruta">Ruta base <span class="req">*</span></label>
+              <input
+                type="text"
+                id="ruta"
+                name="ruta"
+                placeholder="/Volumes/Media/Películas"
+                autocomplete="off"
+                required
+              />
+              <span class="field-hint">Carpeta padre con tus medios (películas, series, etc.).</span>
+            </div>
+
+            <button type="submit" class="btn-primary">
+              <i class="fas fa-wand-magic-sparkles"></i> Agregar Extras a todo
+            </button>
+          </form>
+        </section>
+
+        <aside class="poster-panel">
+          <div class="poster-glow"></div>
+          <div class="poster-frame">
+            <img
+              src="/static/images/extras_background.png"
+              alt="Cartel decorativo de extras"
+              loading="lazy"
             />
+            <div class="poster-caption">
+              <span>Extras</span>
+              Una carpeta por cada medio
+            </div>
           </div>
-          <div class="mb-4">
-            <label for="tipo" class="form-label">Tipo de Contenido:</label>
-            <select id="tipo" name="tipo" class="form-select" required>
-              <option value="peliculas">Películas</option>
-              <option value="series">Series</option>
-              <option value="documentales">Documentales</option>
-            </select>
-          </div>
-          <button type="submit" class="btn btn-warning w-100">
-            <i class="fas fa-plus"></i> Agregar
-          </button>
-        </form>
+        </aside>
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="text-center py-3 bg-warning text-white mt-auto">
-      <p>&copy; 2024 Gestor de Medios. Todos los derechos reservados.</p>
+    <footer class="app-footer">
+      © 2024 <span>Gestor de Medios</span> · Plex Renamer
     </footer>
   </body>
 </html>

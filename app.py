@@ -5,7 +5,7 @@ import sys
 import logging  # Para manejo de logs
 from threading import Timer  # Para abrir el navegador automáticamente
 import webbrowser  # Para manejar el navegador automáticamente
-from win32com.client import Dispatch  # Para crear accesos directos en Windows
+import platform
 
 # Configuración de registros
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -27,34 +27,43 @@ def open_browser():
     """
     Abre automáticamente el navegador en la dirección del servidor Flask.
     """
-    webbrowser.open_new("http://127.0.0.1:5000/")
+    webbrowser.open_new("http://127.0.0.1:5001/")
 
 # Función para crear acceso directo en el escritorio
 def create_desktop_shortcut():
-    """
-    Crea un acceso directo en el escritorio si no existe.
-    """
+    system = platform.system()
     try:
-        desktop = os.path.join(os.path.join(os.environ["USERPROFILE"]), "Desktop")  # Ruta al escritorio
-        shortcut_path = os.path.join(desktop, "Renombrador Plex.lnk")
-        target_path = os.path.abspath(sys.argv[0])  # Ruta del script actual o ejecutable
-        icon_path = os.path.join(static_folder, "icons", "palomitera.ico")
-
-        # Comprobar si ya existe el acceso directo
-        if os.path.exists(shortcut_path):
-            logger.info("El acceso directo ya existe.")
-            return
-
-        # Crear el acceso directo
-        shell = Dispatch("WScript.Shell")
-        shortcut = shell.CreateShortcut(shortcut_path)
-        shortcut.TargetPath = sys.executable  # Ruta del ejecutable de Python o .exe
-        shortcut.Arguments = f'"{target_path}"'  # Pasa el archivo como argumento
-        shortcut.WorkingDirectory = os.path.dirname(target_path)
-        shortcut.IconLocation = icon_path if os.path.exists(icon_path) else ""
-        shortcut.save()
-
-        logger.info(f"Acceso directo creado: {shortcut_path}")
+        if system == "Windows":
+            from win32com.client import Dispatch
+            desktop = os.path.join(os.environ["USERPROFILE"], "Desktop")
+            shortcut_path = os.path.join(desktop, "Renombrador Plex.lnk")
+            target_path = os.path.abspath(sys.argv[0])
+            icon_path = os.path.join(static_folder, "icons", "Palomitera.ico")
+            if os.path.exists(shortcut_path):
+                logger.info("El acceso directo ya existe.")
+                return
+            shell = Dispatch("WScript.Shell")
+            shortcut = shell.CreateShortcut(shortcut_path)
+            shortcut.TargetPath = sys.executable
+            shortcut.Arguments = f'"{target_path}"'
+            shortcut.WorkingDirectory = os.path.dirname(target_path)
+            shortcut.IconLocation = icon_path if os.path.exists(icon_path) else ""
+            shortcut.save()
+            logger.info(f"Acceso directo creado: {shortcut_path}")
+        elif system == "Darwin":
+            desktop = os.path.join(os.path.expanduser("~"), "Desktop")
+            script_path = os.path.abspath(sys.argv[0])
+            shortcut_path = os.path.join(desktop, "Renombrador Plex.command")
+            if os.path.exists(shortcut_path):
+                logger.info("El acceso directo ya existe.")
+                return
+            os.makedirs(desktop, exist_ok=True)
+            with open(shortcut_path, "w") as f:
+                f.write(f'#!/bin/bash\ncd "{os.path.dirname(script_path)}"\n"{sys.executable}" "{script_path}"\n')
+            os.chmod(shortcut_path, 0o755)
+            logger.info(f"Acceso directo creado: {shortcut_path}")
+        else:
+            logger.info(f"Creación de acceso directo no soportada en {system}.")
     except Exception as e:
         logger.error(f"Error al crear el acceso directo: {e}")
 
@@ -212,4 +221,4 @@ if __name__ == "__main__":
     Timer(1, open_browser).start()
 
     # Ejecutar la aplicación Flask
-    app.run(debug=False)
+    app.run(host="127.0.0.1", port=5001, debug=False)

@@ -1,106 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Renombrar Series</title>
+    <title>Renombrar Series — Plex Renamer</title>
 
-    <!-- Bootstrap CSS -->
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Baloo+2:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-
-    <!-- Google Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Baloo+2:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Font Awesome -->
     <link href="/static/fontawesome/css/all.min.css" rel="stylesheet" />
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/static/css/styles_renombrar_series.css" />
-
-    <!-- Favicon -->
+    <link rel="stylesheet" href="/static/css/styles_global.css" />
     <link rel="icon" href="/static/icons/favicon.ico" type="image/x-icon" />
   </head>
   <body>
-    <!-- Header -->
-    <header
-      class="text-center py-5 text-white"
-      style="background-color: #3949ab"
-    >
-      <div class="d-flex justify-content-between align-items-center px-4">
-        <a href="/" class="btn btn-light">
-          <i class="fas fa-home"></i> Inicio
+    <header class="app-header">
+      <div class="header-inner">
+        <a href="/" class="btn-glass">
+          <i class="fas fa-arrow-left"></i> Inicio
         </a>
-        <h1 style="font-family: 'Fredoka One', cursive" class="m-0 mx-auto">
-          <i class="fas fa-edit"></i> Renombrar Series
-        </h1>
+        <div class="brand">
+          <div class="brand-icon"><i class="fas fa-pen-to-square"></i></div>
+          <div>
+            <h1>Renombrar Series</h1>
+            <span class="subtitle">Formato <em>S01E01</em> automático</span>
+          </div>
+        </div>
+        <a href="/shutdown" class="btn-glass danger">
+          <i class="fas fa-power-off"></i> Salir
+        </a>
       </div>
-      <p>Automatiza el renombrado de tus series fácilmente.</p>
     </header>
 
-    <!-- Main Content -->
-    <main
-      class="container d-flex align-items-center justify-content-center vh-100"
-    >
-      <div class="w-100" style="max-width: 500px">
-        <!-- Mensaje de notificación -->
-        {% if mensaje %}
-        <div class="alert alert-primary text-center" role="alert">
-          {{ mensaje }}
-        </div>
-        {% endif %}
-        <!-- Formulario -->
-        <form
-          action="/renombrar_series"
-          method="post"
-          class="bg-white p-5 rounded shadow form-container"
-        >
-          <h2 class="mb-4 text-primary">
-            <i class="fas fa-sync-alt"></i> Renombrar Series
-          </h2>
-          <div class="mb-4">
-            <label for="ruta" class="form-label">Ruta Base:</label>
-            <input
-              type="text"
-              id="ruta"
-              name="ruta"
-              class="form-control"
-              placeholder="Introduce la ruta base de la serie"
-              required
-            />
+    <main>
+      <div class="form-split">
+        <section class="form-card">
+          <div class="form-card-header">
+            <i class="fas fa-sync"></i>
+            <h2>Renombrado automático</h2>
           </div>
-          <div class="mb-4">
-            <label for="nombre" class="form-label">Nombre de la Serie:</label>
-            <input
-              type="text"
-              id="nombre"
-              name="nombre"
-              class="form-control"
-              placeholder="Introduce el nombre de la serie"
-              required
-            />
+          <p class="form-card-desc">
+            Recorre cada <code>Season XX</code> y renombra archivos a <code>Nombre - S01E01.ext</code>.
+          </p>
+
+          {% if mensaje %}
+          <div class="alert {% if 'completo' in mensaje or 'éxito' in mensaje %}alert-success{% else %}alert-error{% endif %}" role="status">
+            <i class="fas fa-{% if 'completo' in mensaje or 'éxito' in mensaje %}circle-check{% else %}circle-exclamation{% endif %}"></i>
+            <span>{{ mensaje }}</span>
           </div>
-          <button type="submit" class="btn btn-primary w-100">
-            <i class="fas fa-sync-alt"></i> Renombrar
-          </button>
-        </form>
+          {% endif %}
+
+          <form action="/renombrar_series" method="post" novalidate>
+            <div class="field">
+              <label for="ruta">Ruta base de la serie <span class="req">*</span></label>
+              <input
+                type="text"
+                id="ruta"
+                name="ruta"
+                placeholder="/Volumes/Media/Series/Breaking Bad"
+                autocomplete="off"
+                required
+              />
+              <span class="field-hint">Carpeta que contiene <code>Season 01</code>, <code>Season 02</code>, …</span>
+            </div>
+
+            <div class="field">
+              <label for="nombre">Nombre de la serie <span class="req">*</span></label>
+              <input
+                type="text"
+                id="nombre"
+                name="nombre"
+                placeholder="Breaking Bad"
+                autocomplete="off"
+                required
+              />
+              <span class="field-hint">Se usa como prefijo en cada archivo renombrado.</span>
+            </div>
+
+            <button type="submit" class="btn-primary">
+              <i class="fas fa-wand-magic-sparkles"></i> Renombrar
+            </button>
+          </form>
+        </section>
+
+        <aside class="poster-panel">
+          <div class="poster-glow"></div>
+          <div class="poster-frame">
+            <img
+              id="random-banner"
+              src="/static/images/series_banner1.png"
+              alt="Cartel decorativo de serie"
+              loading="lazy"
+            />
+            <div class="poster-caption">
+              <span>Renombrar</span>
+              S01E01, S01E02, …
+            </div>
+          </div>
+        </aside>
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer
-      class="text-center py-3 text-white"
-      style="background-color: #3949ab"
-    >
-      <p>&copy; 2024 Gestor de Medios. Todos los derechos reservados.</p>
+    <footer class="app-footer">
+      © 2024 <span>Gestor de Medios</span> · Plex Renamer
     </footer>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/series_banner_randomizer.js"></script>
   </body>
 </html>

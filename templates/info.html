@@ -1,108 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Información</title>
+    <title>Información — Plex Renamer</title>
 
-    <!-- Bootstrap CSS -->
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Baloo+2:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-
-    <!-- Google Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Baloo+2:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Font Awesome -->
     <link href="/static/fontawesome/css/all.min.css" rel="stylesheet" />
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/static/css/styles_info.css" />
-
-    <!-- Favicon -->
+    <link rel="stylesheet" href="/static/css/styles_global.css" />
     <link rel="icon" href="/static/icons/favicon.ico" type="image/x-icon" />
   </head>
   <body>
-    <!-- Header -->
-    <header class="text-center py-5 text-white bg-info">
-      <div class="d-flex justify-content-between align-items-center px-4">
-        <a href="/" class="btn btn-light">
-          <i class="fas fa-home"></i> Inicio
+    <header class="app-header">
+      <div class="header-inner">
+        <a href="/" class="btn-glass">
+          <i class="fas fa-arrow-left"></i> Inicio
         </a>
-        <h1 style="font-family: 'Fredoka One', cursive" class="m-0 mx-auto">
-          <i class="fas fa-info-circle"></i> Información
-        </h1>
-      </div>
-      <p>Estructura de tus carpetas organizadas.</p>
-    </header>
-
-    <!-- Main Content -->
-    <main
-      class="container d-flex align-items-center justify-content-center vh-100"
-    >
-      <section
-        class="structure-section bg-white p-5 rounded shadow w-100"
-        style="max-width: 700px"
-      >
-        <h2 class="text-info mb-4">Estructura de Carpetas</h2>
-        <div class="folder-structure">
-          <div class="folder-item">
-            <i class="fas fa-folder text-warning"></i> <strong>/Movies/</strong>
-            <div class="folder-content ms-4">
-              <i class="fas fa-folder text-primary"></i>
-              <strong>/Movie Title (Year)/</strong>
-              <div class="folder-content ms-4">
-                <i class="fas fa-folder text-secondary"></i>
-                <strong>/Extras/</strong>
-              </div>
-            </div>
-          </div>
-          <div class="folder-item mt-3">
-            <i class="fas fa-folder text-warning"></i>
-            <strong>/TV Shows/</strong>
-            <div class="folder-content ms-4">
-              <i class="fas fa-folder text-primary"></i>
-              <strong>/TV Show Title/</strong>
-              <div class="folder-content ms-4">
-                <i class="fas fa-folder text-secondary"></i>
-                <strong>/Season XX/</strong>
-                <div class="file-item ms-4">
-                  <i class="fas fa-file text-muted"></i>
-                  TV Show Title - SXXEXX - Episode Title.ext
-                </div>
-                <div class="folder-content ms-4">
-                  <i class="fas fa-folder text-secondary"></i>
-                  <strong>/Extras/</strong>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="folder-item mt-3">
-            <i class="fas fa-folder text-warning"></i>
-            <strong>/Documentaries/</strong>
-            <div class="folder-content ms-4">
-              <i class="fas fa-folder text-primary"></i>
-              <strong>/Documentary Title (Year)/</strong>
-              <div class="folder-content ms-4">
-                <i class="fas fa-folder text-secondary"></i>
-                <strong>/Extras/</strong>
-              </div>
-            </div>
+        <div class="brand">
+          <div class="brand-icon"><i class="fas fa-circle-info"></i></div>
+          <div>
+            <h1>Información</h1>
+            <span class="subtitle">Convenciones de Plex y guía rápida</span>
           </div>
         </div>
-      </section>
+        <a href="/shutdown" class="btn-glass danger">
+          <i class="fas fa-power-off"></i> Salir
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <article class="content-card">
+        <h2><i class="fas fa-folder-tree"></i> Estructura de carpetas</h2>
+        <p>
+          Plex detecta el contenido cuando los nombres siguen estas convenciones.
+          Esta app crea las carpetas automáticamente — esto es lo que genera:
+        </p>
+
+        <div class="folder-tree" aria-label="Estructura de carpetas">
+          <div class="item"><i class="fas fa-folder icon-root"></i><span class="folder-name">/Movies/</span></div>
+          <div class="item indent-1"><i class="fas fa-folder icon-mid"></i><span class="folder-name">/Movie Title (Year)/</span></div>
+          <div class="item indent-2"><i class="fas fa-folder icon-leaf"></i><span class="folder-name">/Extras/</span></div>
+
+          <div class="item" style="margin-top: 14px;"><i class="fas fa-folder icon-root"></i><span class="folder-name">/TV Shows/</span></div>
+          <div class="item indent-1"><i class="fas fa-folder icon-mid"></i><span class="folder-name">/TV Show Title/</span></div>
+          <div class="item indent-2"><i class="fas fa-folder icon-leaf"></i><span class="folder-name">/Season XX/</span></div>
+          <div class="item indent-3"><i class="fas fa-file file-name"></i><span class="file-name">TV Show - SXXEXX.ext</span></div>
+          <div class="item indent-2"><i class="fas fa-folder icon-leaf"></i><span class="folder-name">/Extras/</span></div>
+
+          <div class="item" style="margin-top: 14px;"><i class="fas fa-folder icon-root"></i><span class="folder-name">/Documentaries/</span></div>
+          <div class="item indent-1"><i class="fas fa-folder icon-mid"></i><span class="folder-name">/Documentary Title (Year)/</span></div>
+          <div class="item indent-2"><i class="fas fa-folder icon-leaf"></i><span class="folder-name">/Extras/</span></div>
+        </div>
+
+        <h3>Convenciones</h3>
+        <ul>
+          <li>Películas y documentales: <code>Título (Año)</code>.</li>
+          <li>Series: temporadas en formato <code>Season XX</code>.</li>
+          <li>Episodios: <code>Nombre - S01E01.ext</code>.</li>
+          <li>Carpeta <code>Extras</code> dentro de cada medio.</li>
+        </ul>
+
+        <h3>Cómo usar la app</h3>
+        <ul>
+          <li><strong>Crear Películas / Series / Documentales</strong> — genera la estructura desde cero.</li>
+          <li><strong>Agregar Extras</strong> — añade la carpeta <code>Extras</code> en lote sobre una biblioteca existente.</li>
+          <li><strong>Renombrar Series</strong> — renombra todos los archivos de cada <code>Season XX</code> al formato <code>SXXEXX</code>.</li>
+        </ul>
+      </article>
     </main>
 
-    <!-- Footer -->
-    <footer class="text-center py-3 bg-info text-white">
-      <p>&copy; 2024 Gestor de Medios. Todos los derechos reservados.</p>
+    <footer class="app-footer">
+      © 2024 <span>Gestor de Medios</span> · Plex Renamer
     </footer>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
