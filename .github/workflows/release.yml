@@ -1,0 +1,80 @@
+name: Build and upload release binaries
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing release tag to upload binaries to (e.g. v2.0)"
+        required: true
+        default: "v2.0"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            asset_name: PlexRenamer-linux-x64
+            binary: PlexRenamer
+          - os: windows-latest
+            asset_name: PlexRenamer-windows-x64.exe
+            binary: PlexRenamer.exe
+          - os: macos-13            # Intel macOS — complements the arm64 build
+            asset_name: PlexRenamer-macos-x64
+            binary: PlexRenamer
+
+    steps:
+      - name: Checkout (with LFS)
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install runtime + build dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-build.txt
+
+      - name: Build with PyInstaller
+        shell: bash
+        run: pyinstaller build.spec --noconfirm
+
+      - name: Rename binary
+        shell: bash
+        run: |
+          mv "dist/${{ matrix.binary }}" "dist/${{ matrix.asset_name }}"
+          ls -lh dist/
+
+      - name: Resolve target tag
+        id: tag
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "value=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=${{ github.event.inputs.tag }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload to GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          gh release upload "${{ steps.tag.outputs.value }}" \
+            "dist/${{ matrix.asset_name }}" \
+            --clobber
