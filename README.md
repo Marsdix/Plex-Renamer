@@ -1,60 +1,93 @@
 # Plex Renamer
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-000000?style=flat-square&logo=flask&logoColor=white)
 ![PyInstaller](https://img.shields.io/badge/PyInstaller-3670A0?style=flat-square&logo=python&logoColor=white)
-![Status](https://img.shields.io/badge/status-in_development-orange?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
 
-A CLI tool I built because I needed it. Plex Renamer organizes your media library into the folder structure and naming conventions that Plex Media Server expects — automatically.
+A small web app that organizes your media library into the folder structure and naming conventions that Plex Media Server expects — automatically.
+
+- Cross-platform: **Windows · macOS · Linux**
+- Bilingual UI: **Español / English**
+- Optional **TMDB** integration: paste your API key to see real movie/series posters
+- Glassmorphism dark UI
 
 ---
 
 ## What it does
 
-- **Renames** series and movies to match Plex naming conventions
-- **Generates** the folder structure for series, movies, and documents
-- **Adds** Extras folders to existing series or movies
-- **Two ways to run** — precompiled `.exe` (no Python needed) or Python script
+- **Creates** folder structures for movies, series, and documentaries
+- **Adds** an `Extras` folder to every existing media folder
+- **Renames** series episodes to `Title - SXXEXX.ext`
 
 ---
 
-## Installation
+## Run from source
 
-### Option 1 — `.exe` (easiest)
-
-1. Download the latest `.exe` from [Releases](https://github.com/Marsdix/Plex-Renamer/releases/tag/v1.0.0)
-2. Double-click to run — no Python required
-3. On first launch it creates a **Plex Renamer** shortcut on your desktop
-
-### Option 2 — Python script
-
-**Requirements:** Python 3.x with "Add Python to PATH" checked during install.
+Requires Python 3.10+.
 
 ```bash
-# Verify Python is installed
-python --version
+git clone https://github.com/Marsdix/Plex-Renamer.git
+cd Plex-Renamer
+git lfs pull                          # poster images use Git LFS
+python -m venv .venv
+source .venv/bin/activate              # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+python app.py
 ```
 
-1. Download the repo as ZIP → extract to a permanent folder
-2. Double-click `setup.py` — creates a desktop shortcut
-3. Use the shortcut to launch the app
-
-> Keep the folder in a permanent location. Moving it later will break the shortcut — just run `setup.py` again to fix it.
+Then open <http://127.0.0.1:5001>.
 
 ---
 
-## Usage
+## Build a standalone binary
 
-1. Open Plex Renamer (shortcut or `.exe`)
-2. Select the folder containing your media files
-3. Follow the prompts — renamed and organized files appear in the output folder
+A spec for PyInstaller is included. Each platform must build its own binary on that platform — there is no cross-compilation.
+
+```bash
+pip install -r requirements-build.txt
+pyinstaller build.spec
+```
+
+Result:
+
+| Platform | Output |
+|----------|--------|
+| Windows  | `dist/PlexRenamer.exe` |
+| macOS    | `dist/PlexRenamer` (single-file executable; rename to `.command` if you want a double-click launcher) |
+| Linux    | `dist/PlexRenamer` |
+
+Double-click the binary or run it from a terminal. Flask starts on port `5001` and the default browser opens automatically.
 
 ---
 
-## Tech
+## Configuration
 
-- **Python** — core logic and file handling (`os`, `shutil`)
-- **PyInstaller** — compiles the script into a standalone `.exe`
+Settings (TMDB API key, language) are saved to `~/.plex-renamer/config.json` — outside the project tree, so a packaged binary can write it regardless of install location.
+
+To enable real posters:
+
+1. Get a free TMDB API key at <https://www.themoviedb.org/settings/api>
+2. Inside the app, click **Ajustes / Settings** in the header
+3. Paste the key and save
+
+Without a key the bundled banner images are used.
+
+---
+
+## Project layout
+
+```
+app.py                  Flask routes + entry point
+config.py               Load/save ~/.plex-renamer/config.json
+tmdb.py                 TMDB poster fetcher with in-memory cache + fallback
+translations.py         ES/EN UI strings
+build.spec              PyInstaller spec
+templates/              Jinja2 templates (shared _header.html / _footer.html)
+static/css/             Single styles_global.css with design tokens
+static/images/          Bundled poster banners (Git LFS)
+docs/superpowers/specs/ Design specs
+```
 
 ---
 

@@ -1,16 +1,29 @@
-"""Local config persistence (gitignored config.json)."""
+"""Local config persistence in ~/.plex-renamer/config.json.
+
+Stored in the user home directory so a frozen PyInstaller binary can
+write it regardless of install location permissions (Program Files,
+/Applications, etc.).
+"""
 import json
-import os
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
-CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.json")
+CONFIG_DIR = os.path.join(os.path.expanduser("~"), ".plex-renamer")
+CONFIG_PATH = os.path.join(CONFIG_DIR, "config.json")
 
 DEFAULTS = {
     "tmdb_api_key": "",
     "language": "es",
 }
+
+
+def _ensure_dir() -> None:
+    try:
+        os.makedirs(CONFIG_DIR, exist_ok=True)
+    except OSError as e:
+        logger.warning(f"Could not create config dir {CONFIG_DIR}: {e}")
 
 
 def load_config() -> dict:
@@ -27,6 +40,7 @@ def load_config() -> dict:
 
 def save_config(data: dict) -> None:
     merged = {**load_config(), **data}
+    _ensure_dir()
     with open(CONFIG_PATH, "w", encoding="utf-8") as f:
         json.dump(merged, f, indent=2, ensure_ascii=False)
 
