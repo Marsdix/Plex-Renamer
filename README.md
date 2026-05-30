@@ -22,6 +22,19 @@ A small web app that organizes your media library into the folder structure and 
 
 ---
 
+## Download
+
+Pre-built binaries: <https://github.com/Marsdix/Plex-Renamer/releases>
+
+| Platform | File | Notes |
+|----------|------|-------|
+| macOS (Apple Silicon) | `PlexRenamer-macos-arm64` | `chmod +x` then double-click or run from terminal |
+| Windows / Linux | — | Build from source (see below) |
+
+> On first launch a desktop shortcut is created. Settings live in `~/.plex-renamer/config.json`.
+
+---
+
 ## Run from source
 
 Requires Python 3.10+.
